@@ -6,9 +6,10 @@ import './Projects.css'
 function ProjectImage({ src, alt, placeholder }) {
   const [failed, setFailed] = useState(!src)
 
+  // No screenshot: purely decorative box, so keep it out of the accessibility tree.
   if (failed) {
     return (
-      <div className="project__media project__media--empty" role="img" aria-label={alt}>
+      <div className="project__media project__media--empty" aria-hidden="true">
         <span className="mono-label">{placeholder}</span>
       </div>
     )

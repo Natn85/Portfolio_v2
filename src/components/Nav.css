@@ -44,3 +44,25 @@
 .nav__link:hover {
   color: var(--color-heading);
 }
+
+/* Phones: keep everything on one row. */
+@media (max-width: 480px) {
+  .nav__inner {
+    gap: var(--space-2);
+  }
+
+  .nav__links {
+    gap: 0;
+  }
+
+  .nav__link {
+    padding-inline: var(--space-2);
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav__link {
+    padding-inline: 6px;
+  }
+}
