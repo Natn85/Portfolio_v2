@@ -5,8 +5,8 @@
 - [x] 3. Lightning background
 - [x] 4. Projects section + data file
 - [x] 5. Skills + contact + footer
-- [ ] 6. EN/DE toggle
+- [x] 6. EN/DE toggle
 - [ ] 7. Responsive pass + accessibility pass (focus, contrast, reduced motion, alt text)
 - [ ] 8. Final check: build passes, no console errors, README.md
 
-**Next step:** Milestone 6 – EN/DE language toggle (React context + localStorage).
+**Next step:** Milestone 7 – responsive pass (375/768/1024/1440) + accessibility pass.

@@ -19,6 +19,7 @@ export const content = {
       projects: 'Projects',
       skills: 'Skills',
       contact: 'Contact',
+      language: 'Language',
     },
     hero: {
       label: 'Application Developer in Training',
@@ -60,6 +61,7 @@ export const content = {
       projects: 'Projekte',
       skills: 'Skills',
       contact: 'Kontakt',
+      language: 'Sprache',
     },
     hero: {
       label: 'Fachinformatiker für Anwendungsentwicklung in Ausbildung',

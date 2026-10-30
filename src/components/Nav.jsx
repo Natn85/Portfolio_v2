@@ -1,5 +1,6 @@
 import { useContent } from '../i18n/useContent.js'
 import { site } from '../data/content.js'
+import LanguageToggle from './LanguageToggle.jsx'
 import './Nav.css'
 
 export default function Nav() {
@@ -18,6 +19,7 @@ export default function Nav() {
             <li><a className="nav__link" href="#contact">{t.nav.contact}</a></li>
           </ul>
         </nav>
+        <LanguageToggle />
       </div>
     </header>
   )
