@@ -1,0 +1,68 @@
+/* Design tokens – every color, font, size and spacing value lives here. */
+:root {
+  /* Colors */
+  --color-bg: #000;
+  --color-surface: #050505;
+  --color-border: #1f1f1f;
+  --color-border-hover: #333;
+  --color-heading: #ededed;
+  --color-body: #9a9a9a;
+  --color-label: #7a7a7a;
+  --color-focus: #ededed;
+  --color-button-bg: #ededed;
+  --color-button-text: #000;
+  --color-button-bg-hover: #fff;
+  --color-nav-bg: rgba(0, 0, 0, 0.72);
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --text-xs: 0.75rem;   /* 12px – mono labels, tags */
+  --text-sm: 0.875rem;  /* 14px – nav, buttons, small copy */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.125rem;  /* 18px – intro line */
+  --text-xl: 1.25rem;   /* 20px – card titles */
+  --text-h2: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+  --text-hero: clamp(2.75rem, 1.2rem + 6.4vw, 5.5rem); /* ~88px on desktop */
+
+  --leading-tight: 1;
+  --leading-snug: 1.15;
+  --leading-body: 1.6;
+  --tracking-hero: -0.04em;
+  --tracking-heading: -0.03em;
+  --tracking-mono: 0.02em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* Layout */
+  --container: 1120px;
+  --gutter: 1.5rem;
+  --nav-height: 64px;
+  --section-gap: var(--space-10);
+
+  /* Shape & motion */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --border: 1px solid var(--color-border);
+  --transition: 150ms ease;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: 1rem;
+    --nav-height: 56px;
+    --section-gap: var(--space-9);
+  }
+}
