@@ -7,6 +7,6 @@
 - [x] 5. Skills + contact + footer
 - [x] 6. EN/DE toggle
 - [x] 7. Responsive pass + accessibility pass (focus, contrast, reduced motion, alt text)
-- [ ] 8. Final check: build passes, no console errors, README.md
+- [x] 8. Final check: build passes, no console errors, README.md
 
-**Next step:** Milestone 8 – final check (build, console errors) + README.md.
+**Next step:** All milestones done. Content follow-ups: add project screenshots to public/projects/, Live URLs (and a Code URL for the LoL tracker) in src/data/projects.js, and a LinkedIn URL in src/data/content.js.
