@@ -27,6 +27,15 @@ export const content = {
       ctaProjects: 'View projects',
       ctaGithub: 'GitHub',
     },
+    projects: {
+      label: 'Selected work',
+      heading: 'Projects',
+      live: 'Live',
+      code: 'Code',
+      tagsLabel: 'Technologies',
+      noPreview: 'Preview coming soon',
+      imageAlt: (title) => `Screenshot of ${title}`,
+    },
   },
   de: {
     skipLink: 'Zum Inhalt springen',
@@ -43,6 +52,15 @@ export const content = {
       intro: 'Ich bin Nat, angehender Anwendungsentwickler aus Würzburg und baue schnelle, fokussierte Web-Apps.',
       ctaProjects: 'Projekte ansehen',
       ctaGithub: 'GitHub',
+    },
+    projects: {
+      label: 'Ausgewählte Arbeiten',
+      heading: 'Projekte',
+      live: 'Live',
+      code: 'Code',
+      tagsLabel: 'Technologien',
+      noPreview: 'Vorschau folgt',
+      imageAlt: (title) => `Screenshot von ${title}`,
     },
   },
 }

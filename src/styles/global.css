@@ -178,3 +178,44 @@ main:focus {
   height: 100%;
   pointer-events: none;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Cards */
+.card {
+  background: var(--color-surface);
+  border: var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Mono tech tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tag {
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--color-body);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+}
