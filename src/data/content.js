@@ -36,6 +36,21 @@ export const content = {
       noPreview: 'Preview coming soon',
       imageAlt: (title) => `Screenshot of ${title}`,
     },
+    skills: {
+      label: 'Toolkit',
+      heading: 'Skills',
+      groups: {
+        languages: 'Languages',
+        frameworks: 'Frameworks',
+        tools: 'Tools',
+      },
+    },
+    contact: {
+      label: 'Contact',
+      heading: "Let's talk.",
+      text: "I'm open to apprenticeships, internships and junior roles. Feel free to reach out.",
+      email: 'Email',
+    },
   },
   de: {
     skipLink: 'Zum Inhalt springen',
@@ -61,6 +76,21 @@ export const content = {
       tagsLabel: 'Technologien',
       noPreview: 'Vorschau folgt',
       imageAlt: (title) => `Screenshot von ${title}`,
+    },
+    skills: {
+      label: 'Werkzeuge',
+      heading: 'Skills',
+      groups: {
+        languages: 'Sprachen',
+        frameworks: 'Frameworks',
+        tools: 'Tools',
+      },
+    },
+    contact: {
+      label: 'Kontakt',
+      heading: 'Lass uns reden.',
+      text: 'Ich bin offen für Praktika, Werkstudentenstellen und Junior-Positionen. Schreib mir gern.',
+      email: 'E-Mail',
     },
   },
 }

@@ -1,0 +1,10 @@
+.footer {
+  margin-top: var(--section-gap);
+  padding-block: var(--space-6);
+  border-top: var(--border);
+}
+
+.footer__text {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+}
