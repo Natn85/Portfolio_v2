@@ -297,3 +297,42 @@ main:focus {
     transition: none;
   }
 }
+
+/* ---- Scrollbar: black track, lightning-blue thumb ------------------------
+   Chrome/Edge/Safari use the ::-webkit-scrollbar rules (they allow a gradient).
+   Firefox only supports scrollbar-color, so it's set for Firefox alone:
+   in newer Chrome, scrollbar-color would switch off the custom rules above. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+  border-left: 1px solid #0b1020;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2a3d78, #16213f);
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #5b7fe0, #2a3d78);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #8fb0ff, #3d5bb0);
+}
+
+::-webkit-scrollbar-corner {
+  background: #000;
+}
+
+@supports (-moz-appearance: none) {
+  html {
+    scrollbar-color: #2a3d78 #000;
+    scrollbar-width: thin;
+  }
+}
