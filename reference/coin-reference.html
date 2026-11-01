@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Coin logo reference</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sancreek&display=block">
+<style>
+body{margin:0;background:#000;color:#8a8a8a;font-family:ui-monospace,monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+#stage{width:280px;height:280px}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<p id="lab">Latin</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// REFERENCE ONLY: port this into a React component (see the prompt). Visual result must match.
+const LIST=[
+['N','Sancreek','Latin'],
+['ና','Noto Sans Ethiopic','Ge\'ez · Amharic'],
+['ن','Noto Sans Arabic','Arabic'],
+['न','Noto Sans Devanagari','Devanagari · Hindi'],
+['ন','Noto Sans Bengali','Bengali'],
+['ਨ','Noto Sans Gurmukhi','Gurmukhi · Punjabi'],
+['ન','Noto Sans Gujarati','Gujarati'],
+['ந','Noto Sans Tamil','Tamil'],
+['న','Noto Sans Telugu','Telugu'],
+['ನ','Noto Sans Kannada','Kannada'],
+['න','Noto Sans Sinhala','Sinhala'],
+['น','Noto Sans Thai','Thai'],
+['ណ','Noto Sans Khmer','Khmer'],
+['န','Noto Sans Myanmar','Burmese'],
+['ན','Noto Serif Tibetan','Tibetan'],
+['ნ','Noto Sans Georgian','Georgian'],
+['Ն','Noto Sans Armenian','Armenian'],
+['ㄴ','Noto Sans KR','Korean'],
+['ン','Noto Sans JP','Japanese · katakana']
+];
+// Each font is subset to its single glyph via Google Fonts' text= parameter.
+function loadFont(fam,g){
+  return new Promise(res=>{
+    const l=document.createElement('link');
+    l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?family='+fam.replace(/ /g,'+')+'&text='+encodeURIComponent(g)+'&display=block';
+    l.onload=()=>{document.fonts.load('100px "'+fam+'"',g).then(res,res);};
+    l.onerror=res;
+    document.head.appendChild(l);
+  });
+}
+const ready=LIST.map((e,i)=>i===0?document.fonts.load('100px "Sancreek"','N'):loadFont(e[1],e[0]));
+
+const S=280;
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
+renderer.setSize(S,S);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.15;
+renderer.outputEncoding=THREE.sRGBEncoding;
+document.getElementById('stage').appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x000000);
+const camera=new THREE.PerspectiveCamera(32,1,0.1,100);
+camera.position.set(0,0,6.6);
+
+// Studio environment: hard, narrow emissive strips on black = "bright but dark" chrome.
+const envScene=new THREE.Scene();
+function panel(w,h,r,g,b,x,y,z){
+  const m=new THREE.MeshBasicMaterial({side:THREE.DoubleSide});
+  m.color.setRGB(r,g,b);
+  const p=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m);
+  p.position.set(x,y,z);p.lookAt(0,0,0);envScene.add(p);
+}
+panel(9,0.35,4,4,4,0,4.5,2.5);
+panel(0.3,9,3.5,3.5,3.5,-5,0,1.5);
+panel(0.25,9,0.8,1.3,4,5,0,-1);
+panel(7,0.2,2.5,2.5,2.5,0,-4.5,-2.5);
+panel(0.2,6,2,2,2,2,0,5);
+const pmrem=new THREE.PMREMGenerator(renderer);
+scene.environment=pmrem.fromScene(envScene,0.02).texture;
+
+const R=1.6,T=0.24,C=1024,H=C/2;
+// Brushed-metal background, painted once.
+const brushed=document.createElement('canvas');brushed.width=brushed.height=C;
+(function(){
+  const b=brushed.getContext('2d');
+  b.fillStyle='#5d636c';b.fillRect(0,0,C,C);
+  for(let i=0;i<320;i++){
+    const r=40+Math.random()*456;
+    b.strokeStyle='rgba(255,255,255,'+(0.015+Math.random()*0.04)+')';
+    b.lineWidth=1+Math.random()*2.2;
+    b.beginPath();b.arc(H,H,r,0,Math.PI*2);b.stroke();
+  }
+})();
+// Draws inner ring + glyph, auto-fitted and centered by its real bounding box.
+function glyph(ctx,ink,e){
+  ctx.strokeStyle=ink;ctx.lineWidth=18;
+  ctx.beginPath();ctx.arc(H,H,452,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle=ink;ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  const w8=e[1]==='Sancreek'?'':'700 ';
+  const fam='"'+e[1]+'", serif';
+  let size=600;
+  ctx.font=w8+size+'px '+fam;
+  let m=ctx.measureText(e[0]);
+  const h=m.actualBoundingBoxAscent+m.actualBoundingBoxDescent;
+  const w=m.actualBoundingBoxLeft+m.actualBoundingBoxRight;
+  if(h>0&&w>0)size=size*Math.min(540/h,580/w);
+  ctx.font=w8+size+'px '+fam;
+  m=ctx.measureText(e[0]);
+  ctx.fillText(e[0],H+(m.actualBoundingBoxLeft-m.actualBoundingBoxRight)/2,H+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);
+}
+// One face = color/bump canvas (brushed field, white glyph) + roughness canvas (glyph polished).
+function makeFace(){
+  const cc=document.createElement('canvas');cc.width=cc.height=C;
+  const cr=document.createElement('canvas');cr.width=cr.height=C;
+  const tc=new THREE.CanvasTexture(cc);tc.encoding=THREE.sRGBEncoding;
+  const tr=new THREE.CanvasTexture(cr);
+  const an=renderer.capabilities.getMaxAnisotropy();tc.anisotropy=an;tr.anisotropy=an;
+  const mat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:tc,metalness:1,roughness:1,roughnessMap:tr,bumpMap:tc,bumpScale:2,clearcoat:0.5,clearcoatRoughness:0.15});
+  function set(i){
+    const e=LIST[i%LIST.length];
+    const a=cc.getContext('2d');a.drawImage(brushed,0,0);glyph(a,'#ffffff',e);
+    const b=cr.getContext('2d');b.fillStyle='#5c5c5c';b.fillRect(0,0,C,C);glyph(b,'#141414',e);
+    tc.needsUpdate=true;tr.needsUpdate=true;
+  }
+  return{mat,set};
+}
+const F=makeFace(),B=makeFace();
+// Reeded edge.
+const cStr=document.createElement('canvas');cStr.width=1024;cStr.height=4;
+const sc=cStr.getContext('2d');
+for(let i=0;i<1024;i++){const v=i%8<4?200:90;sc.fillStyle='rgb('+v+','+v+','+v+')';sc.fillRect(i,0,1,4);}
+const sideMat=new THREE.MeshPhysicalMaterial({color:0xc4cad3,metalness:1,roughness:0.22,bumpMap:new THREE.CanvasTexture(cStr),bumpScale:1.5});
+const rimMat=new THREE.MeshPhysicalMaterial({color:0xe6eaf0,metalness:1,roughness:0.1});
+const coin=new THREE.Group();
+const side=new THREE.Mesh(new THREE.CylinderGeometry(R,R,T,160,1,true),sideMat);
+side.rotation.x=Math.PI/2;coin.add(side);
+const front=new THREE.Mesh(new THREE.CircleGeometry(R-0.02,160),F.mat);
+front.position.z=T/2;coin.add(front);
+const back=new THREE.Mesh(new THREE.CircleGeometry(R-0.02,160),B.mat);
+back.position.z=-T/2;back.rotation.y=Math.PI;coin.add(back);
+for(const z of[T/2,-T/2]){
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(R-0.07,0.075,20,160),rimMat);
+  rim.position.z=z;coin.add(rim);
+}
+scene.add(coin);
+
+// Swap logic: when a face turns away from the camera, paint the NEXT glyph onto it while hidden.
+let idx=0,frontVis=true;
+ready[0].then(()=>F.set(0),()=>F.set(0));
+ready[1].then(()=>B.set(1),()=>B.set(1));
+const lab=document.getElementById('lab');
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nrm=new THREE.Vector3(),toCam=new THREE.Vector3();
+function frame(t){
+  if(reduce){coin.rotation.y=0.4;coin.rotation.x=0.15;}
+  else{
+    coin.rotation.y=t*0.0011;
+    coin.rotation.x=0.16+Math.sin(t*0.0008)*0.07;
+    coin.position.y=Math.sin(t*0.0013)*0.05;
+  }
+  coin.updateMatrixWorld();
+  nrm.set(0,0,1).applyQuaternion(coin.quaternion);
+  toCam.copy(camera.position).sub(coin.position);
+  const fv=nrm.dot(toCam)>0;
+  if(fv!==frontVis){
+    frontVis=fv;idx++;
+    lab.textContent=LIST[idx%LIST.length][2];
+    (fv?B:F).set(idx+1);
+  }
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

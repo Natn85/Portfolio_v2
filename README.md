@@ -49,3 +49,17 @@ src/
   styles/       tokens.css, global.css
 public/projects/  project screenshots
 ```
+
+## Coin logo
+
+`src/components/CoinLogo.jsx` is the spinning 3D coin at the right of the nav (three.js).
+It is lazy-loaded, so three.js is a separate chunk; `/favicon.svg` shows until it is ready
+and stays if WebGL or the chunk is unavailable. Spin, wobble and look constants are at the top
+of the file. It is a port of `reference/coin-reference.html`, which is kept as documentation
+and is not part of the build.
+
+## Icons
+
+`public/favicon.svg` is the favicon. After changing it, run `npm run icons` to regenerate
+`public/apple-touch-icon.png` (180x180).
+
