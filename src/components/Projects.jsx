@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useContent, useLanguage } from '../i18n/useContent.js'
-import { projects } from '../data/projects.js'
+import { featuredProjects, moreProjects } from '../data/projects.js'
 import './Projects.css'
 
 function ProjectImage({ src, alt, placeholder }) {
@@ -19,6 +19,50 @@ function ProjectImage({ src, alt, placeholder }) {
     <div className="project__media">
       <img src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFailed(true)} />
     </div>
+  )
+}
+
+function ProjectLinks({ project, className = 'project__links' }) {
+  const t = useContent()
+  if (!project.live && !project.code) return null
+
+  return (
+    <div className={className}>
+      {project.live && (
+        <a className="project__link" href={project.live} target="_blank" rel="noreferrer">
+          {t.projects.live}
+          <span className="sr-only"> – {project.title}</span>
+          <span aria-hidden="true"> ↗</span>
+        </a>
+      )}
+      {project.code && (
+        <a className="project__link" href={project.code} target="_blank" rel="noreferrer">
+          {t.projects.code}
+          <span className="sr-only"> – {project.title}</span>
+          <span aria-hidden="true"> ↗</span>
+        </a>
+      )}
+    </div>
+  )
+}
+
+function ProjectRow({ project }) {
+  const t = useContent()
+  const lang = useLanguage()
+
+  return (
+    <li className="project-row">
+      <div className="project-row__main">
+        <h4 className="project-row__title">{project.title}</h4>
+        <p className="project-row__description">{project.description[lang]}</p>
+      </div>
+      <ul className="project-row__tags" aria-label={t.projects.tagsLabel}>
+        {project.tags.map((tag) => (
+          <li key={tag}>{tag}</li>
+        ))}
+      </ul>
+      <ProjectLinks project={project} className="project-row__links" />
+    </li>
   )
 }
 
@@ -41,24 +85,7 @@ function ProjectCard({ project }) {
             <li key={tag} className="tag">{tag}</li>
           ))}
         </ul>
-        {(project.live || project.code) && (
-          <div className="project__links">
-            {project.live && (
-              <a className="project__link" href={project.live} target="_blank" rel="noreferrer">
-                {t.projects.live}
-                <span className="sr-only"> – {project.title}</span>
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            )}
-            {project.code && (
-              <a className="project__link" href={project.code} target="_blank" rel="noreferrer">
-                {t.projects.code}
-                <span className="sr-only"> – {project.title}</span>
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            )}
-          </div>
-        )}
+        <ProjectLinks project={project} />
       </div>
     </article>
   )
@@ -74,10 +101,20 @@ export default function Projects() {
         <h2 id="projects-title" className="section-title">{t.projects.heading}</h2>
       </div>
       <div className="projects__grid">
-        {projects.map((project) => (
+        {featuredProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
+      {moreProjects.length > 0 && (
+        <div className="projects__more">
+          <h3 className="mono-label projects__more-title">{t.projects.moreHeading}</h3>
+          <ul className="project-list">
+            {moreProjects.map((project) => (
+              <ProjectRow key={project.id} project={project} />
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   )
 }
