@@ -1,21 +1,8 @@
-import { lazy, Suspense } from 'react'
 import { useContent } from '../i18n/useContent.js'
 import { site } from '../data/content.js'
 import LanguageToggle from './LanguageToggle.jsx'
+import Coin from './Coin.jsx'
 import './Nav.css'
-
-function CoinFallback() {
-  return (
-    <span className="coin">
-      <img className="coin__fallback" src="/favicon.svg" alt="" />
-    </span>
-  )
-}
-
-// three.js is only pulled in here, as its own chunk. If the chunk can't load, keep the favicon.
-const CoinLogo = lazy(() =>
-  import('./CoinLogo.jsx').catch(() => ({ default: CoinFallback })),
-)
 
 export default function Nav() {
   const t = useContent()
@@ -24,6 +11,7 @@ export default function Nav() {
     <header className="nav">
       <div className="container nav__inner">
         <a className="nav__brand" href="#top" aria-label={t.nav.home}>
+          <span className="nav__coin"><Coin /></span>
           {site.name}
         </a>
         <nav className="nav__right" aria-label={t.nav.label}>
@@ -34,11 +22,6 @@ export default function Nav() {
           </ul>
         </nav>
         <LanguageToggle />
-        <a className="nav__coin" href="#top" aria-label="Nat, back to top">
-          <Suspense fallback={<CoinFallback />}>
-            <CoinLogo />
-          </Suspense>
-        </a>
       </div>
     </header>
   )

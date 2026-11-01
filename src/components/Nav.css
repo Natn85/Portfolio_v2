@@ -67,39 +67,18 @@
   }
 }
 
-/* 3D coin logo (CoinLogo.jsx). The favicon shows until the coin has its first glyph. */
+/* Coin next to "Nat" (Coin.jsx). */
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 .nav__coin {
   flex-shrink: 0;
   display: block;
   width: 56px;
   height: 56px;
-  border-radius: 50%;
-}
-
-.coin {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.coin canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-
-.coin--ready canvas {
-  opacity: 1;
-}
-
-.coin__fallback {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 @media (max-width: 767px) {

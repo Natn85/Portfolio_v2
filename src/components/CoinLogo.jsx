@@ -1,5 +1,5 @@
-// Spinning 3D coin logo for the nav. Ported from reference/coin-reference.html (three r128)
-// to current three. Lazy-loaded from Nav.jsx, so three.js lives in its own chunk.
+// Spinning 3D coin logo (nav brand + big one under the contact card). Ported from reference/coin-reference.html (three r128)
+// to current three. Lazy-loaded through Coin.jsx, so three.js lives in its own chunk.
 //
 // API changes vs. the r128 reference, kept visually identical:
 // - renderer.outputColorSpace / texture.colorSpace replace outputEncoding / texture.encoding.
@@ -337,8 +337,11 @@ export default function CoinLogo() {
       setReady(true)
     })
 
-    // ---- Loop: paused while the tab is hidden; time resumes where it stopped ----
+    // ---- Loop: runs only while the tab is visible and the coin is on screen.
+    // Time resumes where it stopped, so the coin never jumps. ----
     let frame = 0
+    let running = false
+    let onScreen = true
     let elapsed = 0
     let last = null
     function tick(now) {
@@ -348,28 +351,35 @@ export default function CoinLogo() {
       render()
       frame = requestAnimationFrame(tick)
     }
-    function start() {
-      cancelAnimationFrame(frame)
-      last = null
-      frame = requestAnimationFrame(tick)
+    function updateLoop() {
+      const shouldRun = !reduce && onScreen && !document.hidden
+      if (shouldRun && !running) {
+        last = null
+        frame = requestAnimationFrame(tick)
+      } else if (!shouldRun && running) {
+        cancelAnimationFrame(frame)
+      }
+      running = shouldRun
     }
-    function onVisibility() {
-      if (document.hidden) cancelAnimationFrame(frame)
-      else start()
-    }
+    const screenObserver = new IntersectionObserver((entries) => {
+      onScreen = entries[entries.length - 1].isIntersecting
+      updateLoop()
+    })
 
     if (reduce) {
       pose(0)
       render()
     } else {
-      start()
-      document.addEventListener('visibilitychange', onVisibility)
+      screenObserver.observe(host)
+      document.addEventListener('visibilitychange', updateLoop)
+      updateLoop()
     }
 
     return () => {
       disposed = true
       cancelAnimationFrame(frame)
-      document.removeEventListener('visibilitychange', onVisibility)
+      document.removeEventListener('visibilitychange', updateLoop)
+      screenObserver.disconnect()
       resizeObserver.disconnect()
       for (const root of [scene, envScene]) {
         root.traverse((obj) => {

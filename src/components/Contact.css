@@ -113,3 +113,18 @@
     display: none;
   }
 }
+
+/* Big coin centered under the contact card (decorative). */
+.contact__coin {
+  width: 160px;
+  height: 160px;
+  margin: var(--space-8) auto 0;
+}
+
+@media (max-width: 767px) {
+  .contact__coin {
+    width: 120px;
+    height: 120px;
+    margin-top: var(--space-7);
+  }
+}

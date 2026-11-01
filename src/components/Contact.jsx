@@ -1,5 +1,6 @@
 import { useContent } from '../i18n/useContent.js'
 import { site } from '../data/content.js'
+import Coin from './Coin.jsx'
 import './Contact.css'
 
 export default function Contact() {
@@ -33,6 +34,9 @@ export default function Contact() {
           ))}
         </ul>
       </div>
+      </div>
+      <div className="contact__coin" aria-hidden="true">
+        <Coin />
       </div>
     </section>
   )
