@@ -22,7 +22,7 @@ All text and data live in `src/data/`, so content changes never touch components
 | File | What it holds |
 | --- | --- |
 | `src/data/content.js` | All UI text in `en` and `de`, plus name, email, GitHub and LinkedIn links (`site`) |
-| `src/data/projects.js` | Project cards: title, EN/DE description, tags, screenshot, Live/Code links |
+| `src/data/projects.js` | Projects: title, EN/DE description, tags, screenshot, Live/Code links. `featured: true` (max 4) = big card, otherwise a row under "More projects" |
 | `src/data/skills.js` | Skill groups and their tags |
 
 - **Screenshots:** put a 16:9 image in `public/projects/` and set `image: '/projects/your-file.png'`.

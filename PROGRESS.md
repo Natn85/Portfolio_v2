@@ -11,6 +11,6 @@
 - [x] 9. More projects: imported from old portfolio, featured cards (max 4) + compact "More projects" list, EN/DE
 - [x] 10. Lightning: more presence (faster spawns, brighter, double strikes, faster leader)
 - [x] 11. Contact card: light ray running around the border
-- [ ] 12. Page load fade-in + scroll-in sections
+- [x] 12. Page load fade-in + scroll-in sections
 
-**Next step:** Milestone 12 (page load fade-in + scroll-in sections). Placeholders still open in src/data/projects.js (marked <...>): screenshots, Live/Code URLs for Minijob Finder, Monara, video-call app, LoL tracker; Monara's exact tech.
+**Next step:** All milestones done. Placeholders still open in src/data/projects.js (marked <...>): screenshots, Live/Code URLs for Minijob Finder, Monara, video-call app, LoL tracker; Monara's exact tech. LinkedIn URL in src/data/content.js.
