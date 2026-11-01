@@ -29,3 +29,87 @@
     padding: var(--space-5);
   }
 }
+
+/* Light ray running around the contact card's border.
+   The wrapper's 1px padding is the border; the card covers everything inside it. */
+@property --ray-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --ray-boost {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.contact-ray {
+  --ray-color: rgba(160, 190, 255, 0.9);
+  --ray-head: #fff;
+  --ray: conic-gradient(
+    from calc(var(--ray-angle) + var(--ray-boost)),
+    transparent 0deg 300deg,
+    var(--ray-color) 340deg,
+    var(--ray-head) 355deg,
+    transparent 360deg
+  );
+  position: relative;
+  isolation: isolate;
+  padding: 1px;
+  border-radius: var(--radius);
+  background: var(--ray), var(--color-border);
+  /* --ray-boost adds a second lap per 4s on hover (= ~2s per loop). It pauses
+     instead of resetting when the hover ends, so the streak never jumps. */
+  animation:
+    ray-angle 4s linear infinite,
+    ray-boost 4s linear infinite paused;
+}
+
+/* Faint glow under the streak: a blurred copy of the same gradient. */
+.contact-ray::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--ray);
+  filter: blur(8px);
+  opacity: 0.35;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.contact-ray:hover {
+  --ray-color: rgba(180, 205, 255, 1);
+  animation-play-state: running, running;
+}
+
+.contact-ray:hover::before {
+  opacity: 0.55;
+}
+
+/* The wrapper draws the border now. */
+.contact-ray > .contact {
+  border: 0;
+  border-radius: calc(var(--radius) - 1px);
+}
+
+@keyframes ray-angle {
+  to { --ray-angle: 360deg; }
+}
+
+@keyframes ray-boost {
+  to { --ray-boost: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-ray {
+    animation: none;
+    background: var(--color-border-hover);
+  }
+
+  .contact-ray::before {
+    display: none;
+  }
+}

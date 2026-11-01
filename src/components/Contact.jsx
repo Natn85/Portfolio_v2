@@ -12,6 +12,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section container" aria-labelledby="contact-title">
+      <div className="contact-ray">
       <div className="contact card">
         <div className="contact__text">
           <p className="mono-label">{t.contact.label}</p>
@@ -31,6 +32,7 @@ export default function Contact() {
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </section>
   )
