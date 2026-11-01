@@ -9,8 +9,8 @@
 - [x] 7. Responsive pass + accessibility pass (focus, contrast, reduced motion, alt text)
 - [x] 8. Final check: build passes, no console errors, README.md
 - [x] 9. More projects: imported from old portfolio, featured cards (max 4) + compact "More projects" list, EN/DE
-- [ ] 10. Lightning: more presence (faster spawns, brighter, double strikes, faster leader)
+- [x] 10. Lightning: more presence (faster spawns, brighter, double strikes, faster leader)
 - [ ] 11. Contact card: light ray running around the border
 - [ ] 12. Page load fade-in + scroll-in sections
 
-**Next step:** Milestone 10 (lightning constants in src/components/Lightning.jsx). Placeholders still open in src/data/projects.js (marked <...>): screenshots, Live/Code URLs for Minijob Finder, Monara, video-call app, LoL tracker; Monara's exact tech.
+**Next step:** Milestone 11 (contact card border light ray). Placeholders still open in src/data/projects.js (marked <...>): screenshots, Live/Code URLs for Minijob Finder, Monara, video-call app, LoL tracker; Monara's exact tech.

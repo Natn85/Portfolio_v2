@@ -12,7 +12,8 @@
   --color-button-bg: #ededed;
   --color-button-text: #000;
   --color-button-bg-hover: #fff;
-  --color-nav-bg: rgba(0, 0, 0, 0.72);
+  --color-nav-bg: rgba(0, 0, 0, 0.88);
+  --color-scrim: rgba(0, 0, 0, 0.82); /* dark halo behind text that sits on the lightning */
   --color-placeholder: #0a0a0a;
 
   /* Fonts */

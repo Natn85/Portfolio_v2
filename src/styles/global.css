@@ -219,3 +219,21 @@ main:focus {
   border: var(--border);
   border-radius: var(--radius-sm);
 }
+
+/* Keep text that sits directly on the lightning readable: a soft dark halo
+   between the canvas and the text. Same stacking level as the canvas (-1),
+   later in the DOM, so it paints above it. */
+.hero,
+.section-header {
+  position: relative;
+}
+
+.hero::before,
+.section-header::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-6) * -1) 0;
+  z-index: -1;
+  background: radial-gradient(ellipse farthest-side at 30% 50%, var(--color-scrim) 45%, transparent);
+  pointer-events: none;
+}

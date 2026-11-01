@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 // ---- Tweakables ------------------------------------------------------------
-const BRIGHTNESS = 0.55        // global dimming for everything drawn (0–1); keep low, it's decoration
+const BRIGHTNESS = 0.8         // global dimming for everything drawn (0–1)
 const STEP_LENGTH = 13         // px the leader advances per step
-const STEP_MS_MIN = 60         // fastest step interval in ms (lower = faster bolt)
-const STEP_MS_MAX = 150        // slowest step interval in ms
+const STEP_MS_MIN = 46         // fastest step interval in ms (lower = faster bolt)
+const STEP_MS_MAX = 115        // slowest step interval in ms
 const ANGLE_JITTER = 0.45      // max random turn per step, in radians
 const STRAIGHTEN = 0.18        // how strongly each step is pulled back toward straight down (0–1)
 const BRANCH_CHANCE = 0.1      // chance per step that the main channel forks
@@ -14,11 +14,15 @@ const BRANCH_STEPS_MIN = 5     // shortest a branch probes, in steps
 const BRANCH_STEPS_MAX = 22    // longest a first-level branch probes; deeper ones are shorter
 const FRESH_MS = 160           // segments younger than this are drawn brighter
 const FIRST_BOLT_MS = 300      // delay before the first bolt
-const SPAWN_MIN_MS = 3500      // shortest gap between new bolts
-const SPAWN_MAX_MS = 7000      // longest gap between new bolts
-const MAX_BOLTS = 2            // bolts on screen at once
+const SPAWN_MIN_MS = 1500      // shortest gap between new bolts
+const SPAWN_MAX_MS = 3500      // longest gap between new bolts
+const MAX_BOLTS = 3            // bolts on screen at once
 const PULSES = [[0, 1], [95, 0.65], [230, 0.4]] // return-stroke flickers: [offset ms, strength]
 const PULSE_DECAY_MS = 55      // how fast each flicker dies down
+const STROKE_BOOST = 1.6       // return-stroke brightness multiplier on top of the pulses
+const SKY_FLASH = 0.14         // peak alpha of the soft sky glow during a flash
+const DOUBLE_STRIKE_CHANCE = 0.25 // chance a bolt re-strikes down the same channel
+const DOUBLE_STRIKE_MS = 400   // delay of that second return stroke
 const FADE_MS = 2000           // afterglow fade-out after the return stroke
 const MAX_DPR = 1.5            // devicePixelRatio cap, for performance
 // ----------------------------------------------------------------------------
@@ -46,7 +50,13 @@ function createBolt(width, now) {
   const pulses = PULSES
     .slice(0, Math.random() < 0.5 ? 2 : 3)
     .map(([offset, strength], i) => [i === 0 ? 0 : offset + rand(-15, 15), strength])
+  const doubleStrike = Math.random() < DOUBLE_STRIKE_CHANCE
+  if (doubleStrike) {
+    const at = DOUBLE_STRIKE_MS + rand(-40, 40)
+    pulses.push([at, 0.95], [at + 90, 0.5])
+  }
   return {
+    fadeMs: FADE_MS + (doubleStrike ? DOUBLE_STRIKE_MS : 0),
     segments: [],
     leaders: [createLeader(x, 0, DOWN + rand(-0.2, 0.2), 0, now)],
     pulses,
@@ -161,21 +171,21 @@ function drawBolt(ctx, bolt, now, width, height, isStatic = false) {
 
   // Return stroke: main channel flashes and flickers, branches brighten a little.
   const t = now - bolt.strokeAt
-  if (t > FADE_MS) return false
-  const pulse = pulseAt(bolt, t)
-  const fade = 1 - t / FADE_MS
+  if (t > bolt.fadeMs) return false
+  const pulse = pulseAt(bolt, t) * STROKE_BOOST
+  const fade = 1 - t / bolt.fadeMs
 
   if (pulse > 0.01) {
     const radius = Math.max(width, height) * 0.7
     const glow = ctx.createRadialGradient(bolt.cx, height * 0.5, 0, bolt.cx, height * 0.5, radius)
-    glow.addColorStop(0, `rgba(${GLOW_RGB}, ${0.07 * pulse * BRIGHTNESS})`)
+    glow.addColorStop(0, `rgba(${GLOW_RGB}, ${SKY_FLASH * Math.min(pulse, 1) * BRIGHTNESS})`)
     glow.addColorStop(1, `rgba(${GLOW_RGB}, 0)`)
     ctx.fillStyle = glow
     ctx.fillRect(0, 0, width, height)
   }
 
   const mainAlpha = pulse + 0.45 * fade ** 1.5
-  strokeGroup(ctx, buckets[0], mainAlpha, 1.5, 6 + 3 * Math.min(pulse, 1))
+  strokeGroup(ctx, buckets[0], mainAlpha, 1.5 + 0.8 * Math.min(pulse, 1), 6 + 4 * Math.min(pulse, 1))
   for (let d = 1; d <= MAX_DEPTH; d++) {
     strokeGroup(ctx, buckets[d * 2], LEADER_ALPHA[d] * fade + 0.3 * pulse, 1, 4)
   }
